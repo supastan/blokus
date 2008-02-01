@@ -23,15 +23,23 @@ abstract public class Player implements Cloneable {
 	/** Player's score */
 	private int _score;
 	
+	/** Player index. Represents the position at the table */
+	private int _index;
+	
+	private boolean _autoProgress;
+	
 	/**
 	 * Creates an instance of Player.
 	 * 
 	 * @param name Player's display name.
+	 * @param index Player's position at the table.
 	 */
-	public Player(String name) {
+	public Player(String name, int index) {
 		_name = name;
 		_moveQueue = new ArrayBlockingQueue<Move>(QUEUE_SIZE);
 		_hasMoreMoves = true;
+		_index = index;
+		_autoProgress = true;
 	}
 	
 	/**
@@ -59,6 +67,18 @@ abstract public class Player implements Cloneable {
 	 */
 	public int getScore() {
 		return _score;
+	}
+	
+	public int getIndex() {
+		return _index;
+	}
+	
+	public boolean isAutoProgress() {
+		return _autoProgress;
+	}
+	
+	public void setAutoProgress(boolean auto) {
+		_autoProgress = auto;
 	}
 	
 	/**
@@ -89,14 +109,24 @@ abstract public class Player implements Cloneable {
 	 * @param monitor instance of GameMonitor.
 	 * @return next Move
 	 */
-	public Move getNextMove(Board board) {
+	public Move waitForNextMove(Board board) {
 		Move move = null;
-		try {
-			move = _moveQueue.take();
-		} catch (InterruptedException ex) {
-			// do nothing
+
+		if (isAutoProgress()) {
+			move = getNextMove(board);
+		} else {
+			try {
+				move = _moveQueue.take();
+			} catch (InterruptedException ex) {
+				// do nothing
+			}
 		}
+		
 		return move;
+	}
+	
+	public Move getNextMove(Board board) {
+		throw new UnsupportedOperationException();
 	}
 	
 	/**
@@ -115,7 +145,7 @@ abstract public class Player implements Cloneable {
 	
 	public void abort() {
 		// create an abort 
-		Move move = new Move(Move.Type.Quit, null, null);
+		Move move = new Move(Move.Type.Quit, null, 0, 0);
 		putNextMove(move);
 	}
 	

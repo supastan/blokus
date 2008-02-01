@@ -1,12 +1,13 @@
 package data;
 
-import java.awt.Dimension;
 
 public class Move {
 
 	private Piece _piece;
 	
-	private Dimension _location;
+	private int _row;
+	
+	private int _col;
 	
 	/** Move type enumeration */
 	public enum Type {
@@ -23,10 +24,11 @@ public class Move {
 	 * 
 	 * @param type Move Type
 	 */
-	public Move(Type type, Piece piece, Dimension location) {
+	public Move(Type type, Piece piece, int row, int col) {
 		_type = type;
 		_piece = piece;
-		_location = location;
+		_row = row;
+		_col = col;
 	}
 	
 	/**
@@ -42,7 +44,11 @@ public class Move {
 		return _piece;
 	}
 	
-	public Dimension getLocation() {
-		return _location;
+	public int getRow() {
+		return _row;
+	}
+
+	public int getColumn() {
+		return _col;
 	}
 }

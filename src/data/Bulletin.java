@@ -18,20 +18,26 @@ public class Bulletin extends Observable {
 	private static Bulletin _bulletinBoard;
 	
 	/** Stores game messages */
-	private StyledDocument _msg;
+	private StyledDocument _doc;
+	
+	private String _lastMsg;
 	
 	private Bulletin() {
-		_msg = new DefaultStyledDocument();
+		_doc = new DefaultStyledDocument();
 		
 	}
 	
 	public synchronized void reset() {
 		try {
-			_msg.remove(0, _msg.getLength());
+			_doc.remove(0, _doc.getLength());
 		} catch (BadLocationException ex) {
 			// do nothing
 		}
 		
+	}
+	
+	public synchronized String getLastMsg() {
+		return _lastMsg;
 	}
 	
 	/**
@@ -40,7 +46,7 @@ public class Bulletin extends Observable {
 	 * @return message document.
 	 */
 	public synchronized StyledDocument getMessageDoc() {
-		return _msg;
+		return _doc;
 	}
 	
 	/**
@@ -68,10 +74,13 @@ public class Bulletin extends Observable {
 			break;
 		}
 		
-		// write message
+		// save message
+		_lastMsg = str;
+		
+		// write message to doc
 		try {
-			_msg.insertString(_msg.getLength(), str, attribSet);
-			_msg.insertString(_msg.getLength(), "\n", attribSet);
+			_doc.insertString(_doc.getLength(), str, attribSet);
+			_doc.insertString(_doc.getLength(), "\n", attribSet);
 		} catch (BadLocationException ex) {
 			// do nothing
 		}

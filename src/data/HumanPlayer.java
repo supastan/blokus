@@ -9,8 +9,8 @@ public class HumanPlayer extends Player {
 	/**
 	 * Creates an instance of Human player.
 	 */
-	public HumanPlayer() {
-		super(NAME);
+	public HumanPlayer(int index) {
+		super(NAME, index);
 		
 		_hand = new Hand();
 	}
