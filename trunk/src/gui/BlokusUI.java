@@ -45,7 +45,7 @@ public class BlokusUI extends ComponentAdapter {
 	private HandPanel _compHand;
 	
 	/** Stores reference to the panel showing status messages */
-	private StatusPanel _statusPanel;
+	private BulletinPanel _statusPanel;
 	
 	/** Stores reference to menu */
 	private BlokusMenu _menu;
@@ -75,7 +75,7 @@ public class BlokusUI extends ComponentAdapter {
 //		_compHand = new HandPanel(board.getPlayer(Player.COMPUTER_PLAYER_INDEX).getHand());
 //		_userHand = new HandPanel(board.getPlayer(Player.HUMAN_PLAYER_INDEX).getHand());
 //		_buttonPanel = new ButtonPanel(_board);
-		_statusPanel = new StatusPanel();
+		_statusPanel = new BulletinPanel();
 		
 		// inner panel contains score panels and card piles
 		JPanel innerPanel = new JPanel();
