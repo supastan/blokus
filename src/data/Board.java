@@ -40,4 +40,7 @@ public class Board {
 		throw new UnsupportedOperationException();
 	}
 
+	public Board clone() {
+		return null;
+	}
 }

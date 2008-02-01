@@ -18,7 +18,7 @@ public class ComputerPlayer extends Player {
 	
 	@Override
 	public Move getNextMove(Board board) {
-		Move move = null;
+		Move move = new Move(Move.Type.Skip, null, null);
 		
 		
 		return move;

@@ -2,7 +2,7 @@ package data;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
-abstract public class Player {
+abstract public class Player implements Cloneable {
 
 	/** Player move queue size.  Just need one for thread synchronization. */
 	private static final int QUEUE_SIZE = 1;
@@ -15,7 +15,7 @@ abstract public class Player {
 	/** Stores player's hand */
 	protected Hand _hand;
 	
-	protected boolean _abortRequested;
+	protected boolean _hasMoreMoves;
 	
 	/** Player's name */
 	private String _name;
@@ -31,6 +31,7 @@ abstract public class Player {
 	public Player(String name) {
 		_name = name;
 		_moveQueue = new ArrayBlockingQueue<Move>(QUEUE_SIZE);
+		_hasMoreMoves = true;
 	}
 	
 	/**
@@ -75,7 +76,10 @@ abstract public class Player {
 	public void reset() {
 		_hand.reset();
 		_score = 0;
-		_abortRequested = false;
+	}
+	
+	public boolean hasMoreMoves() {
+		return _hasMoreMoves;
 	}
 	
 	/**
@@ -97,7 +101,7 @@ abstract public class Player {
 	
 	/**
 	 * Places a Move to the MoveQueue.  This method is called by UI
-	 * compoments to place user's input into the Queue.
+	 * components to place user's input into the Queue.
 	 * 
 	 * @param move next Move.
 	 */
@@ -110,6 +114,12 @@ abstract public class Player {
 	}
 	
 	public void abort() {
-		_abortRequested = true;
+		// create an abort 
+		Move move = new Move(Move.Type.Quit, null, null);
+		putNextMove(move);
+	}
+	
+	public Player clone() {
+		return null;
 	}
 }
