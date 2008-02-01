@@ -1,7 +1,9 @@
 package app;
 
 import gui.BlokusUI;
+import data.ComputerPlayer;
 import data.Game;
+import data.HumanPlayer;
 
 public class BlokusApp {
 
@@ -16,6 +18,7 @@ public class BlokusApp {
 	 */
 	public BlokusApp() {
 		_game = new Game();
+		
 		_ui = new BlokusUI(_game);
 		_ui.display();
 	}
@@ -25,6 +28,13 @@ public class BlokusApp {
 	 */
 	public void start() {
 		_game.reset();
+		
+		// HACK: add some players
+		_game.addPlayer(new ComputerPlayer(0));
+		_game.addPlayer(new ComputerPlayer(1));
+		_game.addPlayer(new ComputerPlayer(2));
+		_game.addPlayer(new HumanPlayer(3));
+		
 		_game.start();
 		_ui.refresh();
 	}

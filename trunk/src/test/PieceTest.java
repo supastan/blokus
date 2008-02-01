@@ -202,4 +202,26 @@ public class PieceTest {
 		}
 	}
 
+	@Test
+	public void testHasCorners() {
+		Piece.Type[] types = Piece.Type.values();
+		for (int i = 0; i < types.length; i++) {
+			
+			// create a new Piece
+			Piece piece = new Piece(types[i]);
+			int numCorners = piece.getNumCorners();
+			
+			// find all corners
+			int found = 0;
+			for (int row=0; row < piece.getHeight(); row++) {
+				for (int col=0; col < piece.getWidth(); col++) {
+					if (piece.hasCorner(row,col))
+						found++;
+				}
+			}
+			
+			assertEquals("Expected=" + numCorners + ",Found=" + found, numCorners, found);
+		}
+	}
+	
 }

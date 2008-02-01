@@ -8,6 +8,12 @@ public class Game extends Observable {
 
 	public static final int MAX_NUM_PLAYERS = 4;
 	
+	public static final String STARTED_EVENT = "Started";
+	
+	public static final String UPDATED_EVENT = "Updated";
+	
+	public static final String GAMEOVER_EVENT = "GameOver";
+	
 	/** Message type enumeration */
 	public enum MessageType {
 		Normal,
@@ -51,12 +57,16 @@ public class Game extends Observable {
 
 		switch (move.getType()) {
 		case Normal:
+			// place the Piece on the board
+			_board.place(move.getPiece(), move.getRow(), move.getColumn(), _curPlayerIdx);
 			break;
 			
 		case Skip:
+			// do nothing
 			break;
 			
 		case Quit:
+			// this is processed in Monitor.run() method.
 			break;
 		}
 		
@@ -103,6 +113,10 @@ public class Game extends Observable {
 		return _curPlayerIdx;
 	}
 
+	public synchronized Player getCurrentPlayer() {
+		return _players.get(_curPlayerIdx);
+	}
+	
 	public synchronized void addPlayer(Player player) {
 		// check if we're already running
 		if (isRunning()) {
@@ -153,17 +167,11 @@ public class Game extends Observable {
 			return;
 		}
 
-		// HACK: add some players
-		addPlayer(new ComputerPlayer());
-		addPlayer(new ComputerPlayer());
-		addPlayer(new ComputerPlayer());
-		addPlayer(new HumanPlayer());
-		
+		Bulletin.getBoard().appendMsg(MessageType.Normal, "New game has started.");
+
 		// start game monitor thread
 		_monitor = new Thread(new Monitor());
 		_monitor.start();
-		
-		Bulletin.getBoard().appendMsg(MessageType.Normal, "New game has started.");
 	}
 	
 	public void abort() {
@@ -192,6 +200,10 @@ public class Game extends Observable {
 		
 		// update game status
 		setRunningStatus(false);
+		
+		// notify observers about change
+		setChanged();
+		notifyObservers(GAMEOVER_EVENT);
 	}
 
 	private class Monitor implements Runnable {
@@ -203,7 +215,7 @@ public class Game extends Observable {
 			
 			// notify observers to refresh
 			setChanged();
-			notifyObservers();
+			notifyObservers(STARTED_EVENT);
 
 			while (hasMoreMoves()) {
 				
@@ -212,7 +224,7 @@ public class Game extends Observable {
 				Player player = getPlayer(idx);
 				
 				// obtain and process user's move 
-				Move move = player.getNextMove(_board);
+				Move move = player.waitForNextMove(_board);
 				if (move.getType() == Move.Type.Quit) {
 					break;
 				} else {
@@ -227,7 +239,7 @@ public class Game extends Observable {
 
 				// notify observers about change
 				setChanged();
-				notifyObservers();
+				notifyObservers(UPDATED_EVENT);
 			}
 		}
 		

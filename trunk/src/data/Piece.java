@@ -68,6 +68,9 @@ public class Piece implements Cloneable {
 	/** Number of blocks */
 	private int _numBlocks;
 	
+	/** Number of corner blocks */
+	private int _numCornerBlocks;
+	
 	/** Representative character. Used in toString(). */
 	private char _char;
 	
@@ -96,112 +99,133 @@ public class Piece implements Cloneable {
 			_numBlocks = 5; _height = 5; _width = 1; 
 			_blocks[0][0] = _blocks[1][0] = _blocks[2][0] = _blocks[3][0] = _blocks[4][0] = 1;
 			_flipInvariant = true;
+			_numCornerBlocks = 2;
 			break;
 			
 		case L:
 			_numBlocks = 5; _height = 4; _width = 2;
 			_blocks[0][0] = _blocks[1][0] = _blocks[2][0] = _blocks[3][0] = _blocks[3][1] = 1;
+			_numCornerBlocks = 3;
 			break;
 			
 		case U:
 			_numBlocks = 5; _height = 2; _width = 3;
 			_blocks[0][0] = _blocks[0][2] = _blocks[1][0] = _blocks[1][1] = _blocks[1][2] = 1;
+			_numCornerBlocks = 4;
 			break;
 			
 		case Z:
 			_numBlocks = 5; _height = 3; _width = 3;
 			_blocks[0][0] = _blocks[0][1] = _blocks[1][1] = _blocks[2][1] = _blocks[2][2] = 1;
+			_numCornerBlocks = 4;
 			break;
 			
 		case T:
 			_numBlocks = 5; _height = 3; _width = 3;
 			_blocks[0][0] = _blocks[0][1] = _blocks[0][2] = _blocks[1][1] = _blocks[2][1] = 1;
+			_numCornerBlocks = 3;
 			break;
 			
 		case X:
 			_numBlocks = 5; _height = 3; _width = 3;
 			_blocks[0][1] = _blocks[1][0] = _blocks[1][1] = _blocks[1][2] = _blocks[2][1] = 1;
 			_flipInvariant = _rotateInvariant = true;
+			_numCornerBlocks = 4;
 			break;
 			
 		case W:
 			_numBlocks = 5; _height = 3; _width = 3;
 			_blocks[0][2] = _blocks[1][1] = _blocks[1][2] = _blocks[2][0] = _blocks[2][1] = 1;
+			_numCornerBlocks = 5;
 			break;
 			
 		case V:
 			_numBlocks = 5; _height = 3; _width = 3;
 			_blocks[0][2] = _blocks[1][2] = _blocks[2][0] = _blocks[2][1] = _blocks[2][2] = 1;
+			_numCornerBlocks = 3;
 			break;
 			
 		case F:
 			_numBlocks = 5; _height = 3; _width = 3;
 			_blocks[0][1] = _blocks[0][2] = _blocks[1][0] = _blocks[1][1] = _blocks[2][1] = 1;
+			_numCornerBlocks = 4;
 			break;
 			
 		case P:
 			_numBlocks = 5; _height = 3; _width = 2;
 			_blocks[0][0] = _blocks[0][1] = _blocks[1][0] = _blocks[1][1] = _blocks[2][0] = 1;
+			_numCornerBlocks = 4;
 			break;
 			
 		case Y:
 			_numBlocks = 5; _height = 2; _width = 4;
 			_blocks[0][1] = _blocks[1][0] = _blocks[1][1] = _blocks[1][2] = _blocks[1][3] = 1;
+			_numCornerBlocks = 3;
 			break;
 			
 		case N:
 			_numBlocks = 5; _height = 2; _width = 4;
 			_blocks[0][1] = _blocks[0][2] = _blocks[0][3] = _blocks[1][0] = _blocks[1][1] = 1;
+			_numCornerBlocks = 4;
 			break;
 			
 		case One:
 			_numBlocks = 1; _height = 1; _width = 1;
 			_blocks[0][0] = 1;
 			_flipInvariant = _rotateInvariant = true;
+			_numCornerBlocks = 1;
 			break;
 			
 		case Two:
 			_numBlocks = 2; _height = 1; _width = 2;
 			_blocks[0][0] = _blocks[0][1] = 1;
 			_flipInvariant = true;
+			_numCornerBlocks = 2;
 			break;
 			
 		case Three:
 			_numBlocks = 3; _height = 1; _width = 3;
 			_blocks[0][0] = _blocks[0][1] = _blocks[0][2] = 1;
 			_flipInvariant = true;
+			_numCornerBlocks = 2;
 			break;
 			
 		case ShortI:
 			_numBlocks = 4; _height = 4; _width = 1;
 			_blocks[0][0] = _blocks[1][0] = _blocks[2][0] = _blocks[3][0] = 1;
 			_flipInvariant = true;
+			_numCornerBlocks = 2;
 			break;
 			
 		case ShortT:
 			_numBlocks = 4; _height = 2; _width = 3;
 			_blocks[0][0] = _blocks[0][1] = _blocks[0][2] = _blocks[1][1] = 1;
+			_numCornerBlocks = 3;
 			break;
 			
 		case ShortL:
 			_numBlocks = 4; _height = 3; _width = 2;
 			_blocks[0][0] = _blocks[1][0] = _blocks[2][0] = _blocks[2][1] = 1;
+			_numCornerBlocks = 3;
 			break;
 			
 		case ShortZ:
 			_numBlocks = 4; _height = 2; _width = 3;
 			_blocks[0][0] = _blocks[0][1] = _blocks[1][1] = _blocks[1][2] = 1;
+			_numCornerBlocks = 4;
 			break;
 			
 		case Square:
 			_numBlocks = 4; _height = 2; _width = 2;
 			_blocks[0][0] = _blocks[0][1] = _blocks[1][0] = _blocks[1][1] = 1;
 			_flipInvariant = _rotateInvariant = true;
+			_numCornerBlocks = 4;
 			break;
 			
 		case Crooked3:
 			_numBlocks = 3; _height = 2; _width = 2;
 			_blocks[0][0] = _blocks[1][0] = _blocks[1][1] = 1;
+			_numCornerBlocks = 3;
 			break;
 			
 		default:
@@ -242,6 +266,14 @@ public class Piece implements Cloneable {
 	}
 	
 	/**
+	 * Returns the number of corner blocks.
+	 * @return the number of corner blocks.
+	 */
+	public int getNumCorners() {
+		return _numCornerBlocks;
+	}
+	
+	/**
 	 * Returns the blocks array.
 	 * @return the blocks array.
 	 */
@@ -279,6 +311,37 @@ public class Piece implements Cloneable {
 	 */
 	public boolean isRotateInvariant() {
 		return _rotateInvariant;
+	}
+	
+	/**
+	 * Indicates if there is a block in the given location.
+	 * @param row row index
+	 * @param col column index
+	 * @return true if there is a block, else false.
+	 */
+	public boolean hasBlock(int row, int col) {
+		boolean result = false;
+		if (0 <= row && row < _height && 0 <= col && col < _width) {
+			result = _blocks[row][col] == 1;
+		}
+		return result;
+	}
+	
+	/**
+	 * Indicates if there is a corner block at the specified location.
+	 * @param row row index
+	 * @param col column index
+	 * @return true if there is a corner block, else false.
+	 */
+	public boolean hasCorner(int row, int col) {
+		boolean result = false;
+		if (hasBlock(row,col)) {
+			result = ((!hasBlock(row-1,col-1) && !hasBlock(row-1,col) && !hasBlock(row,col-1)) ||
+					(!hasBlock(row-1,col+1) && !hasBlock(row-1,col) && !hasBlock(row,col+1)) ||
+					(!hasBlock(row+1,col-1) && !hasBlock(row+1,col) && !hasBlock(row,col-1)) ||
+					(!hasBlock(row+1,col+1) && !hasBlock(row+1,col) && !hasBlock(row,col+1)));
+		}
+		return result;
 	}
 	
 	/**

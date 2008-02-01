@@ -9,8 +9,8 @@ public class ComputerPlayer extends Player {
 	/** 
 	 * Creates an instance of Computer player.
 	 */
-	public ComputerPlayer() {
-		super(NAME);
+	public ComputerPlayer(int index) {
+		super(NAME, index);
 		
 		_hand = new Hand();
 		
@@ -18,7 +18,7 @@ public class ComputerPlayer extends Player {
 	
 	@Override
 	public Move getNextMove(Board board) {
-		Move move = new Move(Move.Type.Skip, null, null);
+		Move move = new Move(Move.Type.Skip, null, 0, 0);
 		
 		
 		return move;

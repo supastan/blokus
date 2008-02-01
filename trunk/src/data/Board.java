@@ -1,6 +1,5 @@
 package data;
 
-import java.awt.Dimension;
 
 
 
@@ -12,35 +11,51 @@ public class Board {
 
 	int[][] _blocks;
 	
+	
 	/** 
 	 * Creates an empty board.
 	 */
 	public Board() {
-		_blocks = new int[X_DIMENSION][Y_DIMENSION];
+		_blocks = new int[Y_DIMENSION][X_DIMENSION];
 	}
 	
-	public int[][] getBlocks() {
-		return _blocks.clone();
+	public synchronized int getBlock(int row, int col) {
+		return _blocks[row][col];
 	}
 	
 	/**
 	 * Reset Board state.
 	 */
-	public void reset() {
+	public synchronized void reset() {
+		_blocks = new int[Y_DIMENSION][X_DIMENSION];
 	}
 	
 	/**
 	 * Places a piece on the board. 
 	 * 
 	 * @param piece Blokus piece to place.
-	 * @param location location of the upper left hand corner of the piece.
-	 * @return true if the piece can be placed at the specified location, else false.
+	 * @param index Player index.
 	 */
-	public boolean place(Piece piece, Dimension location) {
-		throw new UnsupportedOperationException();
+	public synchronized void place(Piece piece, int row, int col, int index) {
+		
+		if (BoardAnalyzer.canPlace(this, piece, row, col, index)) {
+			for (int i=0; i < piece.getHeight(); i++) {
+				for (int j=0; j < piece.getWidth(); j++) {
+					if (piece.hasBlock(i, j)) {
+						_blocks[row+i][col+j] = index;
+					}
+				}
+			}
+		} else {
+			throw new RuntimeException("Can't place the piece on the board.");
+		}
+		
 	}
 
-	public Board clone() {
-		return null;
+	@Override
+	public synchronized Board clone() {
+		Board copy = new Board();
+		copy._blocks = _blocks.clone();
+		return copy;
 	}
 }
