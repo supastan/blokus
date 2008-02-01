@@ -8,12 +8,6 @@ public class Game extends Observable {
 
 	public static final int MAX_NUM_PLAYERS = 4;
 	
-	/** Game level enumeration */
-	public enum GameLevel {
-		Easy,
-		Hard,
-	}
-	
 	/** Message type enumeration */
 	public enum MessageType {
 		Normal,
@@ -21,121 +15,18 @@ public class Game extends Observable {
 		GameOver,
 	}
 	
-	/** Game level */
-	private GameLevel _level;
-	
 	private Board _board;
 	
 	private ArrayList<Player> _players;
 	
-	private boolean _isGameOver;
+	private int _curPlayerIdx;
 	
-	private int _playerIdx;
+	private boolean _isRunning;
 	
-	private void run() {
-
-		while (!_isGameOver) {
-			
-			// get reference to current player
-			int idx = getCurrentPlayerIndex();
-			Player player = getPlayer(idx);
-			
-			// obtain and process user's move 
-			boolean changeTurn = false;
-			Move move = player.getNextMove(_board);
-			changeTurn = processPlayerMove(move);
-
-			// change turn
-			if (changeTurn) {
-				int curPlayerIdx = getCurrentPlayerIndex();
-				curPlayerIdx++;
-				setCurrentPlayerIndex(curPlayerIdx % _players.size());
-			}
-
-			// notify observers about change
-			setChanged();
-			notifyObservers();
-		}
-		
-	}
+	private Thread _monitor;
 	
-	/**
-	 * Processes player's move.
-	 * 
-	 * @param move player's move
-	 * @return true if the opponent must take the next turn.
-	 */
-	private boolean processPlayerMove(Move move) {
-
-		boolean changeTurn = false;
-		switch (move.getType()) {
-		case Normal:
-			break;
-			
-		case Skip:
-			changeTurn = true;
-			break;
-			
-		case Quit:
-			break;
-		}
-		
-		return changeTurn;
-	}
-
-	
-	public Game() {
-		_level = GameLevel.Easy;
-		_board = new Board();
-		_players = new ArrayList<Player>();
-	}
-	
-	
-	/**
-	 * Returns game level.
-	 * 
-	 * @return game level.
-	 */
-	public GameLevel getGameLevel() {
-		return _level;
-	}
-	
-	/**
-	 * Sets game level to new value.
-	 * 
-	 * @param level new level
-	 */
-	public void setGameLevel(GameLevel level) {
-		_level = level;
-		StatusBoard.getStatusBoard().appendMessage(MessageType.Normal, "Game level is now set to " + _level + ".");
-	} 
-	
-	public void reset() {
-		_board.reset();
-		_players.clear();
-		_isGameOver = false;
-		
-		// set defaults
-		_playerIdx = 0;
-	}
-	
-	/**
-	 * Returns player for the specifed index.
-	 * 
-	 * @param idx player index
-	 * @return player for the specifed index.
-	 */
-	public Player getPlayer(int idx) {
-		return _players.get(idx);
-	}
-	
-	/**
-	 * Returns index for current player.
-	 * 
-	 * @return current player index
-	 */
-	public int getCurrentPlayerIndex() {
-		return _playerIdx;
+	private synchronized void setRunningStatus(boolean status) {
+		_isRunning = status;
 	}
 	
 	/**
@@ -143,41 +34,202 @@ public class Game extends Observable {
 	 * 
 	 * @param idx new player index
 	 */
-	public void setCurrentPlayerIndex(int idx) {
+	private synchronized void setCurrentPlayerIndex(int idx) {
 		if (idx < 0 || idx >= _players.size() ) {
 			throw new IndexOutOfBoundsException("idx=" + idx);
 		}
-		_playerIdx = idx;
+		_curPlayerIdx = idx;
+	}
+	
+	
+	/**
+	 * Processes player's move.
+	 * 
+	 * @param move player's move
+	 */
+	private void processPlayerMove(Move move) {
+
+		switch (move.getType()) {
+		case Normal:
+			break;
+			
+		case Skip:
+			break;
+			
+		case Quit:
+			break;
+		}
+		
+	}
+
+	
+	public Game() {
+		_board = new Board();
+		_players = new ArrayList<Player>();
+	}
+	
+	public synchronized boolean isRunning() {
+		return _isRunning;
+	}
+	
+	public synchronized boolean hasMoreMoves() {
+		for (Player player : _players) {
+			if (player.hasMoreMoves())
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns player for the specified index.
+	 * 
+	 * @param idx player index
+	 * @return player for the specified index.
+	 */
+	public synchronized Player getPlayer(int index) {
+		return _players.get(index);
+	}
+	
+	public synchronized Board getBoard() {
+		return _board;
+	}
+	
+	/**
+	 * Returns index for current player.
+	 * 
+	 * @return current player index
+	 */
+	public synchronized int getCurrentPlayerIndex() {
+		return _curPlayerIdx;
+	}
+
+	public synchronized void addPlayer(Player player) {
+		// check if we're already running
+		if (isRunning()) {
+			Bulletin.getBoard().appendMsg(MessageType.Error, "Player cannot be added after game has started.");
+			return;
+		}
+		
+		// check if there is room for another player
+		if (_players.size() == MAX_NUM_PLAYERS ) {
+			Bulletin.getBoard().appendMsg(MessageType.Error, "Table is full.");
+			return;
+		}
+
+		// check if the player already added
+		if (_players.contains(player)) {
+			Bulletin.getBoard().appendMsg(MessageType.Error, "Player is already at the table.");
+			return;
+		}
+
+		_players.add(player);
+	}
+
+	public synchronized void removePlayer(int index) {
+		// check if we're already running
+		if (isRunning()) {
+			Bulletin.getBoard().appendMsg(MessageType.Error, "A game has already started.");
+			return;
+		}
+		
+		_players.remove(index);
+	}
+
+	public synchronized void reset() {
+		// remove old data
+		_board.reset();
+		_players.clear();
+		
+		// set defaults
+		_isRunning = false;
+		_curPlayerIdx = 0;
 	}
 	
 	public void start() {
-		StatusBoard.getStatusBoard().appendMessage(MessageType.Normal, "New game has started.");
-
-		// create players
-		_players.add(new HumanPlayer());
-		_players.add(new ComputerPlayer());
-		_players.add(new ComputerPlayer());
-		_players.add(new ComputerPlayer());
 		
-		// notify observers to refresh
-		setChanged();
-		notifyObservers();
+		// check if we're already running
+		if (isRunning()) {
+			Bulletin.getBoard().appendMsg(MessageType.Error, "A game has already started.");
+			return;
+		}
 
-		// run game
-		run();
+		// HACK: add some players
+		addPlayer(new ComputerPlayer());
+		addPlayer(new ComputerPlayer());
+		addPlayer(new ComputerPlayer());
+		addPlayer(new HumanPlayer());
+		
+		// start game monitor thread
+		_monitor = new Thread(new Monitor());
+		_monitor.start();
+		
+		Bulletin.getBoard().appendMsg(MessageType.Normal, "New game has started.");
 	}
 	
 	public void abort() {
+		
+		// check if there is a game running
+		if (!isRunning()) {
+			Bulletin.getBoard().appendMsg(MessageType.Error, "There is no running game.");
+			return;
+		}
+		
 		// get reference to current player
 		int idx = getCurrentPlayerIndex();
 		Player player = getPlayer(idx);
 
+		// request player to abort
 		player.abort();
 		
-	}
-	
-	public boolean isGameOver() {
-		return _isGameOver;
+		// wait for monitor thread to die
+		try {
+			_monitor.join();
+		} catch (InterruptedException ex) {
+			// do nothing
+		}
+
+		Bulletin.getBoard().appendMsg(MessageType.GameOver, "Player aborted game.");
+		
+		// update game status
+		setRunningStatus(false);
 	}
 
+	private class Monitor implements Runnable {
+		
+		public void run() {
+
+			// update game status
+			setRunningStatus(true);
+			
+			// notify observers to refresh
+			setChanged();
+			notifyObservers();
+
+			while (hasMoreMoves()) {
+				
+				// get reference to current player
+				int idx = getCurrentPlayerIndex();
+				Player player = getPlayer(idx);
+				
+				// obtain and process user's move 
+				Move move = player.getNextMove(_board);
+				if (move.getType() == Move.Type.Quit) {
+					break;
+				} else {
+					processPlayerMove(move);
+				}
+				Bulletin.getBoard().appendMsg(MessageType.Normal, "Player made a move: " + move);
+				
+				// change turn
+				int curPlayerIdx = getCurrentPlayerIndex();
+				curPlayerIdx++;
+				setCurrentPlayerIndex(curPlayerIdx % _players.size());
+
+				// notify observers about change
+				setChanged();
+				notifyObservers();
+			}
+		}
+		
+	}
 }
