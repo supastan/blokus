@@ -12,7 +12,7 @@ public class BoardAnalyzer {
 	 * @param player
 	 * @return
 	 */
-	public static List<Move> getAvaiableMoves(Board board, Player player) {
+	public static List<Move> getAvailableMoves(Board board, Player player) {
 		return null;
 	}
 
