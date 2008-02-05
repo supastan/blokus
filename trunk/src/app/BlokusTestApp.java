@@ -1,5 +1,6 @@
 package app;
 
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
@@ -8,6 +9,7 @@ import data.Board;
 import data.Bulletin;
 import data.ComputerPlayer;
 import data.Game;
+import data.Hand;
 import data.Move;
 import data.Player;
 
@@ -63,6 +65,14 @@ public class BlokusTestApp implements Observer {
 				Move move = _game.getCurrentPlayer().getNextMove(_game.getBoard());
 				_game.getCurrentPlayer().putNextMove(move);
 				break;
+				
+			case 'h':
+				Hand hand = new Hand();
+				Iterator theHand = hand.getIterator(); 
+				while (theHand.hasNext())
+				{
+					System.out.println(theHand.next().toString());
+				}
 				
 			default:
 				System.out.println("\nInvalid command.");
