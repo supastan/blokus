@@ -28,14 +28,47 @@ public class BoardTest {
 			try
 			{
 				b.place(new Piece(types[i]), 0, 0, 1);
-				System.out.println("I placed a: " + types[i]);
-				printBoard(b);
-				b = new Board();
+				System.out.println("P1 placed a: " + types[i]);
 			}
 			catch(RuntimeException e)
 			{
-				System.out.println("can't place a: " + types[i]);
+				System.out.println("P1 can't place a: " + types[i]);
 			}
+			
+			try
+			{
+				b.place(new Piece(types[i]), 0, 19, 2);
+				System.out.println("P2 placed a: " + types[i]);
+			}
+			catch(RuntimeException e)
+			{
+				System.out.println("P2 can't place a: " + types[i]);
+			}
+			
+			try
+			{
+				b.place(new Piece(types[i]), 19, 19, 3);
+				System.out.println("P3 placed a: " + types[i]);
+			}
+			catch(RuntimeException e)
+			{
+				System.out.println("P3 can't place a: " + types[i]);
+			}
+			
+			try
+			{
+				b.place(new Piece(types[i]), 19, 0, 4);
+				System.out.println("P4 placed a: " + types[i]);
+			}
+			catch(RuntimeException e)
+			{
+				System.out.println("P4 can't place a: " + types[i]);
+			}
+			
+			printBoard(b);
+			b = new Board();
+	
+
 		}
 			
 		//fail("Not yet implemented");

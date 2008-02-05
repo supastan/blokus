@@ -31,6 +31,25 @@ public class BoardAnalyzer {
 		boolean cornerMatched = false;
 		int bRow = 0;
 		int bCol = 0;
+		
+		switch(player) {
+		
+		case 2:
+			col = col - piece.getWidth() + 3;
+			break;
+		
+		case 3:
+			col = col - piece.getWidth() + 3;
+			row = row - piece.getHeight() + 3;
+			break;
+		
+		case 4:
+			row = row - piece.getHeight() + 3;
+			break;
+			
+		default:
+			//player one doesn't need adjusting.
+		}
 	
 		for (int i= 0; i < piece.getHeight(); i++)
 		{
@@ -40,16 +59,21 @@ public class BoardAnalyzer {
 				{
 					bRow = row + i;
 					bCol = col + j;
-					//System.out.println("row: " + bRow + "    col: " +bCol);
-					
-					if (bRow >= 0 && bCol >= 0 && board._blocks[bRow][bCol] != 0)
+					/**
+					System.out.println("row: " + bRow + "    col: " + bCol + 
+							"     boardstate: " + board.getBlock(bRow, bCol) +
+							"     piecestate: " + piece.getBlockType(i, j) +
+							"     player: " + player);
+					*/
+					if (inRange(bRow, bCol) && board.getBlock(bRow, bCol) != 0)
 					{
-						if(board._blocks[bRow][bCol] < 5)
+						if(board.getBlock(bRow, bCol) < 5)
 						{
 							return false;
 						}
 						
-						if(board._blocks[bRow][bCol] - 4 == player && piece.getBlockType(i, j) == 2)
+						if((board.getBlock(bRow, bCol) - 4 == player) 
+								&& (piece.getBlockType(i, j) == 2))
 						{
 							cornerMatched = true;
 						}
@@ -58,7 +82,11 @@ public class BoardAnalyzer {
 				}
 			}
 		}
-		
 		return cornerMatched;
+	}
+	
+	private static boolean inRange(int row, int col)
+	{
+		return (row >= 0 && row <= 19 && col >= 0 && col <= 19);
 	}
 }
