@@ -24,8 +24,16 @@ public class Board {
 		_blocks[19][0] = 8;
 	}
 	
-	public synchronized int getBlock(int row, int col) {
-		return _blocks[row][col];
+	public synchronized int getBlock(int row, int col)
+	{
+		try
+		{
+			return _blocks[row][col];
+		}
+		catch(Exception e)
+		{
+			return -1;
+		}
 	}
 	
 	/**
@@ -50,6 +58,26 @@ public class Board {
 		int bRow, bCol;
 		if (BoardAnalyzer.canPlace(this, piece, row - 1, col - 1, index))
 		{
+			switch(index) {
+			
+			case 2:
+				col = (col - piece.getWidth()) + 3;
+				break;
+			
+			case 3:
+				col = (col - piece.getWidth()) + 3;
+				row = row - piece.getHeight() + 3;
+				break;
+			
+			case 4:
+				row = row - piece.getHeight() + 3;
+				col = col;
+				break;
+				
+			default:
+				//player one doesn't need adjusting.
+			}
+			
 			int placement = 0;
 			for (int i=0; i < piece.getHeight(); i++)
 			{
@@ -57,7 +85,7 @@ public class Board {
 				for (int j=0; j < piece.getWidth(); j++) 
 				{
 					bCol = col + j - 1;
-					if (bRow >= 0 && bCol >= 0 && piece.hasBlock(i, j) && 
+					if (inRange(bRow, bCol) && piece.hasBlock(i, j) && 
 							(_blocks[bRow][bCol] == 0 || _blocks[bRow][bCol] == (index + 4))) 
 					{
 						placement = piece.getBlockType(i, j);
@@ -77,6 +105,11 @@ public class Board {
 			throw new RuntimeException("Can't place the piece on the board.");
 		}
 		
+	}
+	
+	private boolean inRange(int row, int col)
+	{
+		return (row >= 0 && row <= 19 && col >= 0 && col <= 19);
 	}
 
 	@Override
