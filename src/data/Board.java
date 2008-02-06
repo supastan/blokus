@@ -56,7 +56,7 @@ public class Board {
 	public synchronized void place(Piece piece, int row, int col, int index)
 	{
 		int bRow, bCol;
-		if (BoardAnalyzer.canPlace(this, piece, row - 1, col - 1, index))
+		if (BoardAnalyzer.canPlace(this, piece, row, col, index))
 		{
 			switch(index) {
 			
@@ -118,4 +118,6 @@ public class Board {
 		copy._blocks = _blocks.clone();
 		return copy;
 	}
+	
+	
 }

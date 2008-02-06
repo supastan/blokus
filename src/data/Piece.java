@@ -108,6 +108,7 @@ public class Piece implements Cloneable {
 			_blocks[2][1] = _blocks[3][1] = _blocks[4][1] = 1;
 			_blocks[1][1] = _blocks[5][1] = 2;
 			_blocks[0][0] = _blocks[0][2] = _blocks[6][0] = _blocks [6][2] = 3;
+			
 			_flipInvariant = true;
 			_numCornerBlocks = 2;
 			_numPlayableSpots = 4;
