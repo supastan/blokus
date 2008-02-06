@@ -1,10 +1,13 @@
 package test;
 
-import static org.junit.Assert.fail;
+import java.util.ArrayList;
 
 import org.junit.Test;
 
 import data.Board;
+import data.BoardAnalyzer;
+import data.HumanPlayer;
+import data.Move;
 import data.Piece;
 
 /**
@@ -70,8 +73,51 @@ public class BoardTest {
 	
 
 		}
+	}
+	
+	@Test
+	public void testMovesList()
+	{
+		System.out.println("place test");
+		Board b = new Board();
+		printBoard(b);
+		
+		HumanPlayer p1 = new HumanPlayer(1);
+		HumanPlayer p2 = new HumanPlayer(2);
+		HumanPlayer p3 = new HumanPlayer(3);
+		HumanPlayer p4 = new HumanPlayer(4);
+		
+		
+		ArrayList<Move> moves1 = BoardAnalyzer.getAvailableMoves(b, p1);
+		ArrayList<Move> moves2 = BoardAnalyzer.getAvailableMoves(b, p2);
+		ArrayList<Move> moves3 = BoardAnalyzer.getAvailableMoves(b, p3);
+		ArrayList<Move> moves4 = BoardAnalyzer.getAvailableMoves(b, p4);
 			
-		//fail("Not yet implemented");
+		
+		System.out.println("Total moves for p1: " + moves1.size());
+		for (int x=0; x< moves1.size(); x++)
+		{
+			System.out.print(moves1.get(x).getPiece().getType() + ", ");
+		}
+		
+		System.out.println("\nTotal moves for p2: " + moves2.size());
+		for (int x=0; x< moves2.size(); x++)
+		{
+			System.out.print(moves2.get(x).getPiece().getType() + ", ");
+		}
+		
+		System.out.println("\nTotal moves for p3: " + moves3.size());
+		for (int x=0; x< moves3.size(); x++)
+		{
+			System.out.print(moves3.get(x).getPiece().getType() + ", ");
+		}
+		
+		System.out.println("\nTotal moves for p4: " + moves4.size());
+		for (int x=0; x< moves4.size(); x++)
+		{
+			System.out.print(moves4.get(x).getPiece().getType() + ", ");
+		}
+		
 	}
 
 	

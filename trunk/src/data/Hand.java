@@ -28,7 +28,12 @@ public class Hand {
 		return aHand.size();
 	}
 	
-	public Iterator getIterator()
+	public void removePiece(Piece piece)
+	{
+		aHand.remove(piece);
+	}
+	
+	public Iterator<Piece> getIterator()
 	{
 		return aHand.iterator();
 	}
