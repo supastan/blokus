@@ -29,7 +29,7 @@ public class PieceTest {
 			// create a new Piece
 			Piece piece = new Piece(types[i]);
 			System.out.println(types[i].name());
-			System.out.println("Before:");
+			System.out.println("Beore:");
 			System.out.println(piece.toString());
 			int prevWidth = piece.getWidth();
 			int prevHeight = piece.getHeight();
@@ -40,7 +40,7 @@ public class PieceTest {
 			
 			// flip it about x-axis
 			piece.flip(Piece.Axis.X);
-			System.out.println("After flipping about x-axis:");
+			System.out.println("Ater flipping about x-axis:");
 			System.out.println(piece.toString());
 			
 			// verify properties
@@ -68,7 +68,7 @@ public class PieceTest {
 			// create a new Piece
 			Piece piece = new Piece(types[i]);
 			System.out.println(types[i].name());
-			System.out.println("Before:");
+			System.out.println("Beore:");
 			System.out.println(piece.toString());
 			int prevWidth = piece.getWidth();
 			int prevHeight = piece.getHeight();
@@ -79,7 +79,7 @@ public class PieceTest {
 			
 			// flip it about y-axis
 			piece.flip(Piece.Axis.Y);
-			System.out.println("After flipping about y-axis:");
+			System.out.println("Ater flipping about y-axis:");
 			System.out.println(piece.toString());
 			
 			// verify properties
@@ -107,7 +107,7 @@ public class PieceTest {
 			// create a new Piece
 			Piece piece = new Piece(types[i]);
 			System.out.println(types[i].name());
-			System.out.println("Before:");
+			System.out.println("Beore:");
 			System.out.println(piece.toString());
 			int prevWidth = piece.getWidth();
 			int prevHeight = piece.getHeight();
@@ -118,7 +118,7 @@ public class PieceTest {
 			
 			// rotate it in clockwise direction
 			piece.rotate(Piece.Direction.Clockwise);
-			System.out.println("After rotating in clockwise direction:");
+			System.out.println("Ater rotating in clockwise direction:");
 			System.out.println(piece.toString());
 			
 			// verify properties
@@ -148,7 +148,7 @@ public class PieceTest {
 			// create a new Piece
 			Piece piece = new Piece(types[i]);
 			System.out.println(types[i].name());
-			System.out.println("Before:");
+			System.out.println("Beore:");
 			System.out.println(piece.toString());
 			int prevWidth = piece.getWidth();
 			int prevHeight = piece.getHeight();
@@ -159,7 +159,7 @@ public class PieceTest {
 			
 			// rotate it in counter-clockwise direction
 			piece.rotate(Piece.Direction.CounterClockwise);
-			System.out.println("After rotating in counter-clockwise direction:");
+			System.out.println("Ater rotating in counter-clockwise direction:");
 			System.out.println(piece.toString());
 			
 			// verify properties

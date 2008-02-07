@@ -51,4 +51,9 @@ public class Move {
 	public int getColumn() {
 		return _col;
 	}
+	
+	public String toString()
+	{
+		return ("placing " + getPiece().getType() + " at (" + getRow() + "," + getColumn() + ")"); 
+	}
 }

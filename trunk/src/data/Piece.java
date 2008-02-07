@@ -430,7 +430,8 @@ public class Piece implements Cloneable {
 	 */
 	public boolean hasBlock(int row, int col) {
 		boolean result = false;
-		if (0 <= row && row < _height && 0 <= col && col < _width) {
+		if (0 <= row && row < _height && 0 <= col && col < _width)
+		{
 			result = _blocks[row][col] != 0;
 		}
 		return result;
