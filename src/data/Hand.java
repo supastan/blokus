@@ -30,7 +30,14 @@ public class Hand {
 	
 	public void removePiece(Piece piece)
 	{
-		aHand.remove(piece);
+		for (int x = 0; x < aHand.size(); x++)
+		{
+			if (piece.getType() == aHand.get(x).getType())
+			{
+				aHand.remove(x);
+				break;
+			}	
+		}
 	}
 	
 	public Iterator<Piece> getIterator()

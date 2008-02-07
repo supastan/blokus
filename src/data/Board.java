@@ -53,12 +53,19 @@ public class Board {
 	 * @param piece Blokus piece to place.
 	 * @param index Player index.
 	 */
-	public synchronized void place(Piece piece, int row, int col, int index)
+	public synchronized void place(Piece piece, int row, int col, Player player)
 	{
 		int bRow, bCol;
-		if (BoardAnalyzer.canPlace(this, piece, row, col, index))
+		System.out.println("placing: " + BoardAnalyzer.canPlace(this, piece, row, col, player.getIndex()));
+		if (BoardAnalyzer.canPlace(this, piece, row, col, player.getIndex()))
 		{
-			switch(index) {
+			if(piece.getType() == Piece.Type.X)
+			{
+				col = col - 1;
+			}
+			
+			switch(player.getIndex())
+			{
 			
 			case 2:
 				col = (col - piece.getWidth()) + 3;
@@ -86,7 +93,8 @@ public class Board {
 				{
 					bCol = col + j - 1;
 					if (inRange(bRow, bCol) && piece.hasBlock(i, j) && 
-							(_blocks[bRow][bCol] == 0 || _blocks[bRow][bCol] == (index + 4))) 
+							(_blocks[bRow][bCol] == 0 || _blocks[bRow][bCol] == 
+								(player.getIndex() + 4))) 
 					{
 						placement = piece.getBlockType(i, j);
 						if (placement == 3)
@@ -97,13 +105,15 @@ public class Board {
 						{
 							placement = 0;
 						}
-						_blocks[bRow][bCol] = placement + index;
+						_blocks[bRow][bCol] = placement + player.getIndex();
 					}
 				}
 			}
 		} else {
 			throw new RuntimeException("Can't place the piece on the board.");
 		}
+		
+		player.getHand().removePiece(piece);
 		
 	}
 	

@@ -1,6 +1,8 @@
 package test;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Random;
 
 import org.junit.Test;
 
@@ -14,11 +16,17 @@ import data.Piece;
  * JUnit test cases for data.Board class.
  * 
  * @author Yong Shin
+ * @author Brian Fish
  *
  */
 
-public class BoardTest {
-
+public class BoardTest
+{
+	public void testThing()
+	{
+		System.out.println();
+	}
+	/**
 	@Test
 	public void testPlace()
 	{
@@ -26,11 +34,16 @@ public class BoardTest {
 		Board b = new Board();
 		printBoard(b);
 		Piece.Type[] types = Piece.Type.values();
+		HumanPlayer p1 = new HumanPlayer(1);
+		HumanPlayer p2 = new HumanPlayer(2);
+		HumanPlayer p3 = new HumanPlayer(3);
+		HumanPlayer p4 = new HumanPlayer(4);
+		
 		for (int i = 0; i < types.length; i++)
 		{
 			try
 			{
-				b.place(new Piece(types[i]), 0, 0, 1);
+				b.place(new Piece(types[i]), 0, 0, p1);
 				System.out.println("P1 placed a: " + types[i]);
 			}
 			catch(RuntimeException e)
@@ -40,7 +53,7 @@ public class BoardTest {
 			
 			try
 			{
-				b.place(new Piece(types[i]), 0, 19, 2);
+				b.place(new Piece(types[i]), 0, 19, p2);
 				System.out.println("P2 placed a: " + types[i]);
 			}
 			catch(RuntimeException e)
@@ -50,7 +63,7 @@ public class BoardTest {
 			
 			try
 			{
-				b.place(new Piece(types[i]), 19, 19, 3);
+				b.place(new Piece(types[i]), 19, 19, p3);
 				System.out.println("P3 placed a: " + types[i]);
 			}
 			catch(RuntimeException e)
@@ -60,7 +73,7 @@ public class BoardTest {
 			
 			try
 			{
-				b.place(new Piece(types[i]), 19, 0, 4);
+				b.place(new Piece(types[i]), 19, 0, p4);
 				System.out.println("P4 placed a: " + types[i]);
 			}
 			catch(RuntimeException e)
@@ -74,6 +87,7 @@ public class BoardTest {
 
 		}
 	}
+	*/
 	
 	@Test
 	public void testMovesList()
@@ -97,7 +111,7 @@ public class BoardTest {
 		System.out.println("Total moves for p1: " + moves1.size());
 		for (int x=0; x< moves1.size(); x++)
 		{
-			System.out.print(moves1.get(x).getPiece().getType() + ", ");
+			System.out.println(moves1.get(x).getPiece().toString());
 		}
 		
 		System.out.println("\nTotal moves for p2: " + moves2.size());
@@ -119,6 +133,51 @@ public class BoardTest {
 		}
 		
 	}
+	
+	@Test
+	public void placeAllPieces()
+	{
+		System.out.println("place all pieces test");
+		Board b = new Board();
+		printBoard(b);
+		Board clonedBoard = b.clone();
+		
+		HumanPlayer p1 = new HumanPlayer(1);
+		
+		ArrayList<Move> moves1 = BoardAnalyzer.getAvailableMoves(clonedBoard, p1);
+		
+		while (moves1.size()>0)
+		{
+			Random generator = new Random(); 
+			
+			System.out.println("Hand: " + p1.getHand().piecesLeft() + "   available moves: " + moves1.size());
+			Move thisMove = moves1.get(generator.nextInt(moves1.size()));
+			System.out.println(thisMove.toString() + "\n" + thisMove.getPiece().toString());
+		
+			b.place(thisMove.getPiece(), thisMove.getRow(), thisMove.getColumn(), p1);
+			
+			clonedBoard = b.clone(); 
+			printBoard(b);
+			
+			System.out.println();
+			moves1 = BoardAnalyzer.getAvailableMoves(clonedBoard, p1);	
+		}
+		
+		Iterator<Piece> i = p1.getHand().getIterator();
+		
+		while (i.hasNext()) 
+				System.out.print(i.next().getType() + ", ");
+		
+		if(moves1.size() == 0 && p1.getHand().piecesLeft() > 0)
+		{
+			System.out.println("The player was left with " + p1.getHand().piecesLeft() + " pieces");
+		}
+		else if (moves1.size() == 0 && p1.getHand().piecesLeft() == 0)
+		{
+			System.out.println("The player placed everything!");
+		}
+		
+	}
 
 	
 	private void printSeparatorLine() {
@@ -129,7 +188,8 @@ public class BoardTest {
 	}
 
 	private void printBoardLine(Board board, int row) {
-		for (int i=0; i < Board.X_DIMENSION; i++) {
+		for (int i=0; i < Board.X_DIMENSION; i++) 
+		{
 			
 			System.out.print("|" + board.getBlock(row, i));
 		}
@@ -142,5 +202,6 @@ public class BoardTest {
 			printBoardLine(board, row);
 		}
 		printSeparatorLine();
-	}
+	} 
+	
 }
