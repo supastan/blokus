@@ -54,6 +54,13 @@ public class Move {
 	
 	public String toString()
 	{
-		return ("placing " + getPiece().getType() + " at (" + getRow() + "," + getColumn() + ")"); 
+		if (this.getType() == Move.Type.Skip)
+		{
+			return ("skipping a move");
+		}
+		else
+		{
+			return ("placing " + getPiece().getType() + " at (" + getRow() + "," + getColumn() + ")"); 
+		}
 	}
 }

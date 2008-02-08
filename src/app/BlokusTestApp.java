@@ -5,6 +5,8 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
 
+import data.AI;
+import data.AIRandom;
 import data.Board;
 import data.Bulletin;
 import data.ComputerPlayer;
@@ -45,7 +47,7 @@ public class BlokusTestApp implements Observer {
 
 		while (true) {
 
-			System.out.print("(s->step, q->quit, n->new game) ? ");
+			System.out.print("(s->step, q->quit, n->new game, h->see hand) ? ");
 			boolean done = true;
 			
 			Scanner scan = new Scanner(System.in);
@@ -57,8 +59,7 @@ public class BlokusTestApp implements Observer {
 				break;
 				
 			case 'n':
-				_game.reset();
-				_game.start();
+				start();
 				break;
 				
 			case 's':
@@ -67,7 +68,7 @@ public class BlokusTestApp implements Observer {
 				break;
 				
 			case 'h':
-				Hand hand = new Hand();
+				Hand hand = _game.getCurrentPlayer().getHand();
 				Iterator theHand = hand.getIterator(); 
 				while (theHand.hasNext())
 				{
@@ -104,8 +105,11 @@ public class BlokusTestApp implements Observer {
 		_game.reset();
 
 		// HACK: add some players
+		
+		AI anAI;
 		for (int i = 0; i < 4; i++) {
-			Player player = new ComputerPlayer(i+1);
+			anAI = new AIRandom();
+			Player player = new ComputerPlayer(i+1, anAI);
 			player.setAutoProgress(false);
 			_game.addPlayer(player);
 		}

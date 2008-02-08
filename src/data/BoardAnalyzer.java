@@ -20,7 +20,7 @@ public class BoardAnalyzer {
 		ArrayList<Pair> moveSpots = getPlayableSpots(board, player.getIndex());
 		ArrayList<Move> moves = new ArrayList<Move>();
 		
-		System.out.println("Possible move spots: " + moveSpots.size());
+		//System.out.println("Possible move spots: " + moveSpots.size());
 		
 		if (moveSpots.size() == 0)
 		{
