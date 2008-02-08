@@ -58,7 +58,7 @@ public class Game extends Observable {
 		switch (move.getType()) {
 		case Normal:
 			// place the Piece on the board
-			_board.place(move.getPiece(), move.getRow(), move.getColumn(), _curPlayerIdx);
+			_board.place(move.getPiece(), move.getRow(), move.getColumn(), _players.get(_curPlayerIdx));
 			break;
 			
 		case Skip:
@@ -168,7 +168,7 @@ public class Game extends Observable {
 		}
 
 		Bulletin.getBoard().appendMsg(MessageType.Normal, "New game has started.");
-
+		
 		// start game monitor thread
 		_monitor = new Thread(new Monitor());
 		_monitor.start();
@@ -230,7 +230,8 @@ public class Game extends Observable {
 				} else {
 					processPlayerMove(move);
 				}
-				Bulletin.getBoard().appendMsg(MessageType.Normal, "Player made a move: " + move);
+				Bulletin.getBoard().appendMsg(MessageType.Normal, "Player " +player.getIndex() +
+						" made a move: " + move);
 				
 				// change turn
 				int curPlayerIdx = getCurrentPlayerIndex();

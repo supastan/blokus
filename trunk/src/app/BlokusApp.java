@@ -1,6 +1,7 @@
 package app;
 
 import gui.BlokusUI;
+import data.AIRandom;
 import data.ComputerPlayer;
 import data.Game;
 import data.HumanPlayer;
@@ -30,9 +31,9 @@ public class BlokusApp {
 		_game.reset();
 		
 		// HACK: add some players
-		_game.addPlayer(new ComputerPlayer(0));
-		_game.addPlayer(new ComputerPlayer(1));
-		_game.addPlayer(new ComputerPlayer(2));
+		_game.addPlayer(new ComputerPlayer(0, new AIRandom()));
+		_game.addPlayer(new ComputerPlayer(1, new AIRandom()));
+		_game.addPlayer(new ComputerPlayer(2, new AIRandom()));
 		_game.addPlayer(new HumanPlayer(3));
 		
 		_game.start();

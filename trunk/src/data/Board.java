@@ -56,7 +56,7 @@ public class Board {
 	public synchronized void place(Piece piece, int row, int col, Player player)
 	{
 		int bRow, bCol;
-		System.out.println("placing: " + BoardAnalyzer.canPlace(this, piece, row, col, player.getIndex()));
+		//System.out.println("placing: " + BoardAnalyzer.canPlace(this, piece, row, col, player.getIndex()));
 		if (BoardAnalyzer.canPlace(this, piece, row, col, player.getIndex()))
 		{
 			if(piece.getType() == Piece.Type.X)
@@ -93,8 +93,7 @@ public class Board {
 				{
 					bCol = col + j - 1;
 					if (inRange(bRow, bCol) && piece.hasBlock(i, j) && 
-							(_blocks[bRow][bCol] == 0 || _blocks[bRow][bCol] == 
-								(player.getIndex() + 4))) 
+							(_blocks[bRow][bCol] == 0 || _blocks[bRow][bCol] > 4)) 
 					{
 						placement = piece.getBlockType(i, j);
 						if (placement == 3)
