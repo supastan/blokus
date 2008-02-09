@@ -103,6 +103,16 @@ abstract public class Player implements Cloneable {
 	}
 	
 	/**
+	 * Sets the _hasMoreMoves parameter
+	 * 
+	 * @param canMove true if the player can move, false if otherwise.
+	 */
+	public void setHasMoreMoves(boolean canMove)
+	{
+		_hasMoreMoves = canMove;
+	}
+	
+	/**
 	 * Removes a Move from the MoveQueue.  This method blocks the
 	 * Game thread until a Move becomes available in the Queue.
 	 * 
@@ -152,4 +162,6 @@ abstract public class Player implements Cloneable {
 	public Player clone() {
 		return null;
 	}
+	
+
 }

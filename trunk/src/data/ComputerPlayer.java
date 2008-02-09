@@ -30,10 +30,16 @@ public class ComputerPlayer extends Player {
 		}
 		catch(RuntimeException e)
 		{
+			this.setHasMoreMoves(false);
 			aMove = new Move(Move.Type.Skip, null, 0, 0 );
 		}
 		
 		return aMove;
+	}
+	
+	public AI getAI()
+	{
+		return thisAI;
 	}
 
 }
