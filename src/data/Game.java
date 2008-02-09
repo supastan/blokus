@@ -242,7 +242,11 @@ public class Game extends Observable {
 				setChanged();
 				notifyObservers(UPDATED_EVENT);
 			}
+			
+			Bulletin.getBoard().appendMsg(MessageType.GameOver, "Game Over");
+			
+			setChanged();
+			notifyObservers(UPDATED_EVENT);
 		}
-		
 	}
 }
