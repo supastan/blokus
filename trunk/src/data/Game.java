@@ -1,6 +1,7 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Observable;
 
 
@@ -159,6 +160,28 @@ public class Game extends Observable {
 		_curPlayerIdx = 0;
 	}
 	
+	private void computeScore()
+	{
+		for (Player p: _players)
+		{
+			Hand h = p.getHand();
+			
+			if (h.piecesLeft() == 0)
+			{
+				p.addScore(20);
+			}
+			else
+			{
+				Iterator<Piece> i = h.getIterator();
+			
+				while (i.hasNext())
+				{
+					p.addScore(-1 * i.next().getNumBlocks());
+				}			
+			}
+		}
+	}
+	
 	public void start() {
 		
 		// check if we're already running
@@ -219,6 +242,7 @@ public class Game extends Observable {
 
 			while (hasMoreMoves()) {
 				
+				System.out.println("monitor on player: " + getCurrentPlayerIndex());
 				// get reference to current player
 				int idx = getCurrentPlayerIndex();
 				Player player = getPlayer(idx);
@@ -244,6 +268,15 @@ public class Game extends Observable {
 			}
 			
 			Bulletin.getBoard().appendMsg(MessageType.GameOver, "Game Over");
+			computeScore();
+			
+			for (Player player : _players)
+			{
+				Bulletin.getBoard().appendMsg(MessageType.Normal, "Player " + player.getIndex() 
+						+ ": " + player.getScore());
+			}
+			
+			_isRunning = false;
 			
 			setChanged();
 			notifyObservers(UPDATED_EVENT);

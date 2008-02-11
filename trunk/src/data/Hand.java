@@ -53,6 +53,4 @@ public class Hand {
 			aHand.add(new Piece(types[i]));
 		}
 	}
-	
-	
 }

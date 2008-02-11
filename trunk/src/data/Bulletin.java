@@ -22,6 +22,8 @@ public class Bulletin extends Observable {
 	
 	private String _lastMsg;
 	
+	private MessageType _lastMsgType;
+	
 	private Bulletin() {
 		_doc = new DefaultStyledDocument();
 		
@@ -38,6 +40,11 @@ public class Bulletin extends Observable {
 	
 	public synchronized String getLastMsg() {
 		return _lastMsg;
+	}
+	
+	public synchronized MessageType getLastType()
+	{
+		return _lastMsgType;
 	}
 	
 	/**
@@ -76,6 +83,9 @@ public class Bulletin extends Observable {
 		
 		// save message
 		_lastMsg = str;
+		
+		//save type
+		_lastMsgType = type;
 		
 		// write message to doc
 		try {
