@@ -27,8 +27,7 @@ public class AILikesMiddle extends AI
 			aMove = moves.get(x);
 			weight = 0;
 			
-			weight = (10 * Math.abs(9 - aMove.getRow()))
-					+ (10 * Math.abs(9 - aMove.getColumn()));
+			weight = -10 * Math.round(20 - distToMiddle(aMove.getRow(), aMove.getColumn()));;
 			
 			weightedMoves.add(new WeightedMove(moves.get(x), weight));	
 		}

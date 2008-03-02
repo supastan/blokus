@@ -135,6 +135,12 @@ abstract public class Player implements Cloneable {
 		return move;
 	}
 	
+	/**
+	 * Should always be overridden
+	 * 
+	 * @param board the current board
+	 * @return the next move
+	 */
 	public Move getNextMove(Board board) {
 		throw new UnsupportedOperationException();
 	}
