@@ -67,6 +67,7 @@ public class Bulletin extends Observable {
 		MutableAttributeSet attribSet = new SimpleAttributeSet(); 
 		FontConstants.setFontSize(attribSet, 14);
 
+		//System.out.println("I'me the board, i'm adding " + str);
 		// build AttributeSet appropriate for message type
 		switch(type) {
 		

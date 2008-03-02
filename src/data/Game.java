@@ -41,10 +41,8 @@ public class Game extends Observable {
 	 * 
 	 * @param idx new player index
 	 */
-	private synchronized void setCurrentPlayerIndex(int idx) {
-		if (idx < 0 || idx >= _players.size() ) {
-			throw new IndexOutOfBoundsException("idx=" + idx);
-		}
+	private synchronized void setCurrentPlayerIndex(int idx)
+	{
 		_curPlayerIdx = idx;
 	}
 	
@@ -54,7 +52,7 @@ public class Game extends Observable {
 	 * 
 	 * @param move player's move
 	 */
-	private void processPlayerMove(Move move) {
+	private synchronized void processPlayerMove(Move move) {
 
 		switch (move.getType()) {
 		case Normal:
@@ -194,7 +192,7 @@ public class Game extends Observable {
 		
 		// start game monitor thread
 		_monitor = new Thread(new Monitor());
-		_monitor.start();
+		_monitor.run();
 	}
 	
 	public void abort() {
@@ -231,8 +229,8 @@ public class Game extends Observable {
 
 	private class Monitor implements Runnable {
 		
-		public void run() {
-
+		public synchronized void run() {
+			
 			// update game status
 			setRunningStatus(true);
 			
@@ -258,9 +256,9 @@ public class Game extends Observable {
 						" made a move: " + move);
 				
 				// change turn
-				int curPlayerIdx = getCurrentPlayerIndex();
-				curPlayerIdx++;
-				setCurrentPlayerIndex(curPlayerIdx % _players.size());
+				setCurrentPlayerIndex((getCurrentPlayerIndex() + 1) % 4);
+				
+				System.out.println("now it's this guys turn " +  getCurrentPlayerIndex());
 
 				// notify observers about change
 				setChanged();

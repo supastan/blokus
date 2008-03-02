@@ -132,8 +132,7 @@ public class TestPlayfield extends JPanel
 		}
 			
 		/**
-		 * When the action happens, set the line flag to true, all others to false, and call the syncro 
-		 * helper method.
+		 * When the action happens,trigger the next AI to move.
 		 * 
 		 * @param action the event
 		 */
