@@ -40,16 +40,17 @@ public class AImidBlocksCorners extends AI
 			weightedMoves.add(new WeightedMove(moves.get(x), 
 					( -1 * (midWeight + blockWeight + cornerWeight))));	
 		}
+		/*
 		System.out.println("AI MBC moves: " + weightedMoves.size() + " top candidate: "
 				+ weightedMoves.peek().getWeight() + "  move: " + 
-				weightedMoves.peek().getMove().toString());
+				weightedMoves.peek().getMove().toString());  */
 		
 		return weightedMoves.peek().getMove();
 	}
 	
 	public String toString()
 	{
-		return ("Middle preference AI");
+		return ("Mid/blocks/corners AI");
 	}
 
 }

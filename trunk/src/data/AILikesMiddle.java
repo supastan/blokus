@@ -31,9 +31,10 @@ public class AILikesMiddle extends AI
 			
 			weightedMoves.add(new WeightedMove(moves.get(x), weight));	
 		}
+		/*
 		System.out.println("AI middle moves: " + weightedMoves.size() + " top candidate: "
 				+ weightedMoves.peek().getWeight() + "  move: " + 
-				weightedMoves.peek().getMove().toString());
+				weightedMoves.peek().getMove().toString());  */
 		
 		return weightedMoves.peek().getMove();
 	}

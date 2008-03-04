@@ -20,6 +20,7 @@ public class Game extends Observable {
 		Normal,
 		Error,
 		GameOver,
+		Score
 	}
 	
 	private Board _board;
@@ -46,7 +47,6 @@ public class Game extends Observable {
 		_curPlayerIdx = idx;
 	}
 	
-	
 	/**
 	 * Processes player's move.
 	 * 
@@ -67,11 +67,9 @@ public class Game extends Observable {
 		case Quit:
 			// this is processed in Monitor.run() method.
 			break;
-		}
-		
+		}	
 	}
 
-	
 	public Game() {
 		_board = new Board();
 		_players = new ArrayList<Player>();
@@ -239,8 +237,6 @@ public class Game extends Observable {
 			notifyObservers(STARTED_EVENT);
 
 			while (hasMoreMoves()) {
-				
-				System.out.println("monitor on player: " + getCurrentPlayerIndex());
 				// get reference to current player
 				int idx = getCurrentPlayerIndex();
 				Player player = getPlayer(idx);
@@ -257,27 +253,26 @@ public class Game extends Observable {
 				
 				// change turn
 				setCurrentPlayerIndex((getCurrentPlayerIndex() + 1) % 4);
-				
-				System.out.println("now it's this guys turn " +  getCurrentPlayerIndex());
 
 				// notify observers about change
 				setChanged();
 				notifyObservers(UPDATED_EVENT);
 			}
 			
-			Bulletin.getBoard().appendMsg(MessageType.GameOver, "Game Over");
+			
 			computeScore();
 			
 			for (Player player : _players)
 			{
-				Bulletin.getBoard().appendMsg(MessageType.Normal, "Player " + player.getIndex() 
+				Bulletin.getBoard().appendMsg(MessageType.Score, "Player " + player.getIndex() 
 						+ ": " + player.getScore());
 			}
 			
-			_isRunning = false;
-			
+			Bulletin.getBoard().appendMsg(MessageType.GameOver, "Game Over");
 			setChanged();
 			notifyObservers(UPDATED_EVENT);
+			
+			_isRunning = false;
 		}
 	}
 }
