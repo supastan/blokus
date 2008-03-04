@@ -3,16 +3,13 @@ package data;
 
 public class ComputerPlayer extends Player {
 
-	/** Name of the player */
-	private static final String NAME = "Computer";
-	
 	AI thisAI;
 	
 	/** 
 	 * Creates an instance of Computer player.
 	 */
 	public ComputerPlayer(int index, AI ai) {
-		super(NAME, index);
+		super(ai.toString(), index);
 		
 		thisAI  = ai;
 		

@@ -2,6 +2,7 @@ package app;
 
 import gui.TestPlayfield;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -11,7 +12,6 @@ import data.AImidBlocksCorners;
 import data.Bulletin;
 import data.ComputerPlayer;
 import data.Game;
-import data.Move;
 import data.Player;
 import data.Game.MessageType;
 
@@ -21,9 +21,19 @@ public class BlokusAutoRunner implements Observer
 	
 	private TestPlayfield playfield;
 	
-	int gamesPlayed = 1;
+	int gamesPlayed = 0;
 	
-	int[] players;
+	int topScore = -100;
+	
+	String topPlayer;
+	
+	int worstScore = 100;
+	
+	String worstPlayer;
+	
+	int gamesToPlay = 250;
+	
+	double[] players = new double[4];
 	
 	public void start()
 	{
@@ -35,22 +45,18 @@ public class BlokusAutoRunner implements Observer
 
 		// HACK: add some players
 		Player player1 = new ComputerPlayer(1, new AILikesMiddle());
-		//player1.setAutoProgress(false);
 		_game.addPlayer(player1);
 		
 		Player player2 = new ComputerPlayer(2, new AImidBlocksCorners());
-		//player2.setAutoProgress(false);
 		_game.addPlayer(player2);
 		
 		Player player3 = new ComputerPlayer(3, new AILikesMiddle());
-		//player3.setAutoProgress(false);
 		_game.addPlayer(player3);
 		
 		Player player4 = new ComputerPlayer(4, new AIRandom());
-		//player4.setAutoProgress(false);
 		_game.addPlayer(player4);
 
-		playfield = new TestPlayfield(_game);
+		//playfield = new TestPlayfield(_game);
 		_game.start();
 	}
 	
@@ -58,25 +64,51 @@ public class BlokusAutoRunner implements Observer
 	{
 		if (obj instanceof Bulletin)
 		{
-			playfield.repaint();
+			//playfield.repaint();
 			Bulletin b = (Bulletin) obj;
-			System.out.println(b.getLastMsg());
+			
+			/*
+			if(b.getLastType() == MessageType.Score)
+			{
+				System.out.println(b.getLastMsg());
+			}
+			*/
 			
 			if(b.getLastType() == MessageType.GameOver)
 			{
+				int aScore;
 				for (int x = 0; x < 4; x++)
 				{
-					players[x] += _game.getPlayer(x).getScore();
+					aScore = _game.getPlayer(x).getScore();
+					players[x] += aScore;
+					if (aScore > topScore)
+					{
+						topScore = aScore;
+						topPlayer = _game.getPlayer(x).getName();
+					}
+					else if (aScore < worstScore)
+					{
+						worstScore = aScore;
+						worstPlayer = _game.getPlayer(x).getName();
+					}
 				}
 				
 				gamesPlayed++;
+				System.out.println("Completed game #" + gamesPlayed);
 				
-				if(gamesPlayed == 2)
+				if(gamesPlayed == gamesToPlay)
 				{
-					for (int x = 1; x < 5; x++)
+					for (int x = 0; x < 4; x++)
 					{
-						System.out.println ("score for P" + x + " " + (players[x]/gamesPlayed));
+						System.out.println ("score for Player" + (x + 1) + " ("
+								+ _game.getPlayer(x).getName() + ") "
+								+ (players[x]/gamesPlayed));
 					}
+					System.out.println("Averaged over " + gamesPlayed + " games");
+					System.out.println("The best score was " + topScore + 
+							" by " + topPlayer);
+					System.out.println("The worst score was " + worstScore + 
+							" by " + worstPlayer); 		
 				}
 				else
 				{
