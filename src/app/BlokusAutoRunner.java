@@ -19,8 +19,6 @@ public class BlokusAutoRunner implements Observer
 {
 	Game _game;
 	
-	private TestPlayfield playfield;
-	
 	int gamesPlayed = 0;
 	
 	int topScore = -100;
@@ -56,7 +54,6 @@ public class BlokusAutoRunner implements Observer
 		Player player4 = new ComputerPlayer(4, new AIRandom());
 		_game.addPlayer(player4);
 
-		//playfield = new TestPlayfield(_game);
 		_game.start();
 	}
 	
@@ -64,7 +61,6 @@ public class BlokusAutoRunner implements Observer
 	{
 		if (obj instanceof Bulletin)
 		{
-			//playfield.repaint();
 			Bulletin b = (Bulletin) obj;
 			
 			/*
