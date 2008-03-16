@@ -1,12 +1,10 @@
 package app;
 
-import gui.TestPlayfield;
-
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 import data.AILikesMiddle;
+import data.AILookAhead;
 import data.AIRandom;
 import data.AImidBlocksCorners;
 import data.Bulletin;
@@ -29,12 +27,13 @@ public class BlokusAutoRunner implements Observer
 	
 	String worstPlayer;
 	
-	int gamesToPlay = 250;
+	int gamesToPlay = 100;
 	
 	double[] players = new double[4];
 	
 	public void start()
 	{
+		System.out.println("Now running game " + gamesPlayed + " of " + gamesToPlay);
 		_game = new Game();
 		_game.reset();
 		
@@ -48,10 +47,10 @@ public class BlokusAutoRunner implements Observer
 		Player player2 = new ComputerPlayer(2, new AImidBlocksCorners(15, 10, 10));
 		_game.addPlayer(player2);
 		
-		Player player3 = new ComputerPlayer(3, new AImidBlocksCorners(10, 10, 5));
+		Player player3 = new ComputerPlayer(3, new AIRandom());
 		_game.addPlayer(player3);
 		
-		Player player4 = new ComputerPlayer(4, new AIRandom());
+		Player player4 = new ComputerPlayer(4, new AILookAhead(_game));
 		_game.addPlayer(player4);
 
 		_game.start();
@@ -90,7 +89,7 @@ public class BlokusAutoRunner implements Observer
 				}
 				
 				gamesPlayed++;
-				//System.out.println("Completed game #" + gamesPlayed + "   ");
+				System.out.println("Completed game #" + gamesPlayed + "   ");
 				
 				if(gamesPlayed == gamesToPlay)
 				{
