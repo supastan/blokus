@@ -56,8 +56,8 @@ public class Board {
 	public synchronized void place(Piece piece, int row, int col, Player player)
 	{
 		int bRow, bCol;
-		System.out.println("P" + player.getIndex() + " trying to place: " + piece.getType() + " at " + row + "," + col);
-		System.out.println("placing: " + BoardAnalyzer.canPlace(this, piece, row, col, player.getIndex()));
+		//System.out.println("P" + player.getIndex() + " trying to place: " + piece.getType() + " at " + row + "," + col);
+		//System.out.println("placing: " + BoardAnalyzer.canPlace(this, piece, row, col, player.getIndex()));
 		if (BoardAnalyzer.canPlace(this, piece, row, col, player.getIndex()))
 		{
 			if(piece.getType() == Piece.Type.X)
