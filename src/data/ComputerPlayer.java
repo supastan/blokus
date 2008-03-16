@@ -1,5 +1,7 @@
 package data;
 
+import java.util.ArrayList;
+
 
 public class ComputerPlayer extends Player {
 
@@ -37,6 +39,14 @@ public class ComputerPlayer extends Player {
 	public AI getAI()
 	{
 		return thisAI;
+	}
+	
+	@Override
+	public Player clone() {
+		ComputerPlayer copy = new ComputerPlayer(this.getIndex(), thisAI);
+		copy._hand = this._hand.clone();
+		
+		return copy;
 	}
 
 }

@@ -6,10 +6,16 @@ import java.util.PriorityQueue;
 public class AImidBlocksCorners extends AI
 {
 	PriorityQueue<WeightedMove> weightedMoves;
+	int bwFactor;
+	int mwFactor;
+	int cwFactor;
 
-	public AImidBlocksCorners()
+	public AImidBlocksCorners(int bw, int mw, int cw)
 	{
 		weightedMoves = new PriorityQueue<WeightedMove>();
+		bwFactor = bw;
+		mwFactor = mw;
+		cwFactor = cw;
 	}
 
 	@Override
@@ -24,6 +30,7 @@ public class AImidBlocksCorners extends AI
 		weightedMoves.clear();
 		
 		ArrayList<Move> moves = super.getAvailableMoves(board, player);
+		//System.out.println("I'm considering " + moves.size() + " moves");
 		for(int x = 0; x < moves.size(); x++)
 		{
 			aMove = moves.get(x);
@@ -31,11 +38,11 @@ public class AImidBlocksCorners extends AI
 			blockWeight = 0;
 			cornerWeight = 0;
 			
-			midWeight = 10 * Math.round(20 - distToMiddle(aMove.getRow(), aMove.getColumn()));
+			midWeight = mwFactor * Math.round(20 - distToMiddle(aMove.getRow(), aMove.getColumn()));
 			
-			blockWeight = aMove.getPiece().getNumBlocks() * 10;
+			blockWeight = aMove.getPiece().getNumBlocks() * bwFactor;
 			
-			cornerWeight = aMove.getPiece().getPlayableSpots() * 5;
+			cornerWeight = aMove.getPiece().getPlayableSpots() * cwFactor;
 			
 			weightedMoves.add(new WeightedMove(moves.get(x), 
 					( -1 * (midWeight + blockWeight + cornerWeight))));	
@@ -50,7 +57,7 @@ public class AImidBlocksCorners extends AI
 	
 	public String toString()
 	{
-		return ("Mid/blocks/corners AI");
+		return ("Mid/blocks/corners AI, " + "M" + mwFactor + ", B" + bwFactor + ", C" + cwFactor);
 	}
 
 }

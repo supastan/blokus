@@ -6,6 +6,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import data.AILikesMiddle;
+import data.AILookAhead;
 import data.AIRandom;
 import data.AImidBlocksCorners;
 import data.Board;
@@ -64,15 +65,15 @@ public class BlokusGUIapp implements Observer {
 		_game.reset();
 
 		// HACK: add some players
-		Player player1 = new ComputerPlayer(1, new AILikesMiddle());
+		Player player1 = new ComputerPlayer(1, new AILookAhead(_game));
 		player1.setAutoProgress(false);
 		_game.addPlayer(player1);
 		
-		Player player2 = new ComputerPlayer(2, new AImidBlocksCorners());
+		Player player2 = new ComputerPlayer(2, new AImidBlocksCorners(10, 10, 5));
 		player2.setAutoProgress(false);
 		_game.addPlayer(player2);
 		
-		Player player3 = new ComputerPlayer(3, new AIRandom());
+		Player player3 = new ComputerPlayer(3, new AImidBlocksCorners(10, 10, 5));
 		player3.setAutoProgress(false);
 		_game.addPlayer(player3);
 		
