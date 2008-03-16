@@ -56,7 +56,8 @@ public class Board {
 	public synchronized void place(Piece piece, int row, int col, Player player)
 	{
 		int bRow, bCol;
-		//System.out.println("placing: " + BoardAnalyzer.canPlace(this, piece, row, col, player.getIndex()));
+		System.out.println("P" + player.getIndex() + " trying to place: " + piece.getType() + " at " + row + "," + col);
+		System.out.println("placing: " + BoardAnalyzer.canPlace(this, piece, row, col, player.getIndex()));
 		if (BoardAnalyzer.canPlace(this, piece, row, col, player.getIndex()))
 		{
 			if(piece.getType() == Piece.Type.X)
@@ -116,17 +117,51 @@ public class Board {
 		
 	}
 	
+	public void setBlocks(int[][] blocks)
+	{
+		for (int x = 0; x < 20; x++)
+		{
+			for (int y = 0; y < 20; y++)
+			{
+				_blocks[x][y] = blocks[x][y];
+			}
+		}
+	}
+	
 	private boolean inRange(int row, int col)
 	{
 		return (row >= 0 && row <= 19 && col >= 0 && col <= 19);
 	}
 
 	@Override
-	public synchronized Board clone() {
+	public Board clone() {
 		Board copy = new Board();
-		copy._blocks = _blocks.clone();
+		copy.setBlocks(_blocks);
 		return copy;
 	}
 	
-	
+	private void printSeparatorLine() {
+		for (int i=0; i < Board.X_DIMENSION; i++) {
+			System.out.print(" -");
+		}
+		System.out.println();
+	}
+
+	private void printBoardLine(Board board, int row) {
+		for (int i=0; i < Board.X_DIMENSION; i++) {
+			
+			System.out.print("|" + board.getBlock(row, i));
+		}
+		System.out.println("|");
+	}
+
+	public String toString()
+	{
+		printSeparatorLine();
+		for (int row=0; row < Board.Y_DIMENSION; row++) {
+			printBoardLine(this, row);
+		}
+		printSeparatorLine();
+		return "";
+	}
 }

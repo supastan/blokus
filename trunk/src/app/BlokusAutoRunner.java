@@ -45,10 +45,10 @@ public class BlokusAutoRunner implements Observer
 		Player player1 = new ComputerPlayer(1, new AILikesMiddle());
 		_game.addPlayer(player1);
 		
-		Player player2 = new ComputerPlayer(2, new AImidBlocksCorners());
+		Player player2 = new ComputerPlayer(2, new AImidBlocksCorners(15, 10, 10));
 		_game.addPlayer(player2);
 		
-		Player player3 = new ComputerPlayer(3, new AILikesMiddle());
+		Player player3 = new ComputerPlayer(3, new AImidBlocksCorners(10, 10, 5));
 		_game.addPlayer(player3);
 		
 		Player player4 = new ComputerPlayer(4, new AIRandom());
@@ -90,7 +90,7 @@ public class BlokusAutoRunner implements Observer
 				}
 				
 				gamesPlayed++;
-				System.out.println("Completed game #" + gamesPlayed);
+				//System.out.println("Completed game #" + gamesPlayed + "   ");
 				
 				if(gamesPlayed == gamesToPlay)
 				{

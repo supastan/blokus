@@ -53,4 +53,12 @@ public class Hand {
 			aHand.add(new Piece(types[i]));
 		}
 	}
+	
+	public Hand clone()
+	{
+		Hand copy = new Hand();
+		copy.aHand = (ArrayList<Piece>)this.aHand.clone();
+		
+		return copy;
+	}
 }
