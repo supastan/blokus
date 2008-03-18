@@ -64,12 +64,12 @@ public class BlokusGUIapp implements Observer {
 	public void start() {
 		_game.reset();
 
-		// HACK: add some players
-		Player player1 = new ComputerPlayer(1, new AILookAhead(_game));
+		// add some players
+		Player player1 = new ComputerPlayer(1, new AILikesMiddle());
 		player1.setAutoProgress(false);
 		_game.addPlayer(player1);
 		
-		Player player2 = new ComputerPlayer(2, new AImidBlocksCorners(10, 10, 5));
+		Player player2 = new ComputerPlayer(2, new AImidBlocksCorners(10, 15, 5));
 		player2.setAutoProgress(false);
 		_game.addPlayer(player2);
 		

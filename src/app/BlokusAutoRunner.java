@@ -33,7 +33,7 @@ public class BlokusAutoRunner implements Observer
 	
 	public void start()
 	{
-		System.out.println("Now running game " + gamesPlayed + " of " + gamesToPlay);
+		System.out.println("Now running game " + (gamesPlayed + 1) + " of " + gamesToPlay);
 		_game = new Game();
 		_game.reset();
 		
@@ -50,7 +50,7 @@ public class BlokusAutoRunner implements Observer
 		Player player3 = new ComputerPlayer(3, new AIRandom());
 		_game.addPlayer(player3);
 		
-		Player player4 = new ComputerPlayer(4, new AILookAhead(_game));
+		Player player4 = new ComputerPlayer(4, new AIRandom());
 		_game.addPlayer(player4);
 
 		_game.start();

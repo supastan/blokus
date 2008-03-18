@@ -10,7 +10,7 @@ public class AImidBlocksCorners extends AI
 	int mwFactor;
 	int cwFactor;
 
-	public AImidBlocksCorners(int bw, int mw, int cw)
+	public AImidBlocksCorners(int mw, int bw, int cw)
 	{
 		weightedMoves = new PriorityQueue<WeightedMove>();
 		bwFactor = bw;
